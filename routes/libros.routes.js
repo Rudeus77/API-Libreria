@@ -22,10 +22,11 @@ router.get('/', async (req, res) => {
   }
 });
 
-// Obtener detalles de un libro por ID de Mongo
+// Obtener detalles de un libro por ID manual
 router.get('/:id', async (req, res) => {
   try {
-    const libro = await Libro.findById(req.params.id);
+    // Convertimos req.params.id a número usando parseInt
+    const libro = await Libro.findOne({ id: parseInt(req.params.id) });
     if (!libro) return res.status(404).json({ error: 'Libro no encontrado' });
     res.json(libro);
   } catch (error) {
@@ -33,10 +34,11 @@ router.get('/:id', async (req, res) => {
   }
 });
 
-// Actualizar un libro por ID de Mongo
+// Actualizar un libro por ID manual
 router.put('/:id', async (req, res) => {
   try {
-    const libro = await Libro.findByIdAndUpdate(req.params.id, req.body, { new: true });
+    // Convertimos req.params.id a número
+    const libro = await Libro.findOneAndUpdate({ id: parseInt(req.params.id) }, req.body, { new: true });
     if (!libro) return res.status(404).json({ error: 'Libro no encontrado' });
     res.json(libro);
   } catch (error) {
@@ -44,10 +46,11 @@ router.put('/:id', async (req, res) => {
   }
 });
 
-// Eliminar un libro por ID de Mongo
+// Eliminar un libro por ID manual
 router.delete('/:id', async (req, res) => {
   try {
-    const libro = await Libro.findByIdAndDelete(req.params.id);
+    // Convertimos req.params.id a número
+    const libro = await Libro.findOneAndDelete({ id: parseInt(req.params.id) });
     if (!libro) return res.status(404).json({ error: 'Libro no encontrado' });
     res.json({ mensaje: 'Libro eliminado' });
   } catch (error) {
